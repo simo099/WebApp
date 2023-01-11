@@ -15,21 +15,20 @@ app.get('/users', async (req, res) => {
 })
 
 app.put('/users', async (req, res) => {
-    if((req.body.first_name === '')||(req.body.first_name === null)){
+    if(!req.body.first_name){
         return res.status(400).json({status: 400, message: "Bad Request"});
     }
-    else if((req.body.last_name === '')||(req.body.last_name === null)){
+    if(!req.body.last_name){
         return res.status(400).json({status: 400, message: "Bad Request"});
     }
-    else if((req.body.address === '')||(req.body.address === null)){
+    if(!req.body.address){
         return res.status(400).json({status: 400, message: "Bad Request"});
     }
-    else{
-        await db.none("INSERT INTO users(first_name, last_name, address) VALUES (${first_name},${last_name},${address})",
-            req.body
-        )
-        res.send()
-    }
+    await db.none("INSERT INTO users(first_name, last_name, address) VALUES (${first_name},${last_name},${address})",
+        req.body
+    )
+    res.send()
+    
 })
 
 app.listen(port, () => {
