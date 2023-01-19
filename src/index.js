@@ -1,27 +1,16 @@
 const { json } = require('express');
 const express = require('express');
 const pgp = require('pg-promise')();
+const auth = require('./middleware/basic-auth.ts');
 
 const app = express();
 const port = 3000;
 
 const db = pgp(process.env["DB_URL"]);
 
-const basicAuth = require('express-basic-auth')
-
 app.use(express.json());
+app.use(auth);
 
-app.use(basicAuth({
-    users: { 'foo': 'bar' },
-    unauthorizedResponse: getUnauthorizedResponse
-}))
-
-function getUnauthorizedResponse(req) {
-    return req.auth
-        ? ('Unauthorized: credentials rejected')
-        : 'No credentials provided'
-}
- 
 async function validation(req, res){
     if((!req.body.first_name)||(!req.body.last_name)||(!req.body.address)){
         return res.status(400).json({status: 400, message: "Bad Request", validation: false});
