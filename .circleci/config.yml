@@ -12,10 +12,10 @@ jobs:
       - checkout
       - run:
           name: "dependencies"
-          command: “npm install”
+          command: "npm install"
       - run:
           name: "Run tests"
-          command: “npm run test”
+          command: "npm run test"
       - persist_to_workspace:
           root: .
           paths:
