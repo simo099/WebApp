@@ -1,26 +1,22 @@
-const { json } = require('express');
-const express = require('express');
-const pgp = require('pg-promise')();
-const auth = require('./middleware/basic-auth.ts');
+import { json } from 'express';
+import express from 'express';
+import pgpromise from 'pg-promise';
+import auth from './middleware/basic-auth.js';
 
 const app = express();
 const port = 3000;
+const pgp = pgpromise({});
 
 const db = pgp(process.env["DB_URL"]);
 
 app.use(express.json());
 app.use(auth);
 
-async function validation(req, res){
-    if((!req.body.first_name)||(!req.body.last_name)||(!req.body.address)){
-        return res.status(400).json({status: 400, message: "Bad Request", validation: false});
-    }
-    else{
-        res.json({validation: true});
-        await db.none("INSERT INTO users(first_name, last_name, address) VALUES (${first_name},${last_name},${address})",
-        req.body
-        )
-    }
+export function isValid(req){
+    if(req.body.first_name && req.body.last_name && req.body.address)
+        return true;
+    return false;
+        //return res.status(400).json({status: 400, message: "Bad Request", validation: false});
 }
 
 app.get('/users', async (req, res) => {
@@ -28,9 +24,14 @@ app.get('/users', async (req, res) => {
     res.send(data)
 })
 
-app.put('/users', (req, res) => {
-    validation(req, res);
-    res.send()
+app.put('/users', async (req, res) => {
+    if(isValid(req)){
+        await db.none("INSERT INTO users(first_name, last_name, address) VALUES ($(first_name),$(last_name),$(address))", req.body)
+        res.statusCode = 201;
+        res.send()
+    }else{
+        res.status(400).json({status: 400, message: "Bad Request", validation: false});
+    }
 })
 
 app.listen(port, () => {
