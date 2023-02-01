@@ -1,4 +1,4 @@
-const basicAuth = require('express-basic-auth')
+import basicAuth from'express-basic-auth'
 
 const BasicAuth = basicAuth({
     users: { 'foo': 'bar' },
@@ -11,4 +11,4 @@ function getUnauthorizedResponse(req) {
         : 'No credentials provided'
 }
 
-module.exports = BasicAuth
+export default BasicAuth
