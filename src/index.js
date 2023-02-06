@@ -60,8 +60,13 @@ app.put('/users', async (req, res) => {
 */ 
 app.patch('/users/:id', async (req, res) => {
     const id = req.params.id
-    await db.none(`UPDATE users SET first_name=$(first_name), last_name=$(last_name), address=$(address) WHERE id=${id}`, req.body)
-    res.send();
+    if(isValid(req)){
+        await db.none(`UPDATE users SET first_name=$(first_name), last_name=$(last_name), address=$(address) WHERE id=${id}`, req.body)
+        res.send()
+    }
+    else{
+      res.status(400).json({status: 400, message: "Bad Request", validation: false});  
+    }
 })
 
 /** 
