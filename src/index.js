@@ -60,8 +60,8 @@ app.put('/users', async (req, res) => {
 */ 
 app.patch('/users/:id', async (req, res) => {
     const id = req.params.id
-    const data = await db.query("UPDATE users SET first_name='Mario', last_name='Rossi', address='via delle Trote 1' WHERE id=$1;", [id])
-    res.send(data);
+    await db.none(`UPDATE users SET first_name=$(first_name), last_name=$(last_name), address=$(address) WHERE id=${id}`, req.body)
+    res.send();
 })
 
 /** 
