@@ -10,21 +10,21 @@ const pgp = pgpromise({});
 /** 
  * Define the Database Url as an Enviroment Variable, which will be declared in the command prompt.
  * @constant db
- */ 
+*/ 
 const db = pgp(process.env["DB_URL"]);
 
 /**
  * Use Express.
  * @constant app
  * @requires module express 
- */
+*/
 app.use(express.json());
 
 /** 
  * Use basic authentication.
  * @constant app
  * @requires module auth
- */ 
+*/ 
 app.use(auth);
 
 /** 
@@ -33,12 +33,12 @@ app.use(auth);
  * @async
  * @param {*} req
  * @param {*} res
- */
+*/
 app.get('/users', async (req, res) => {
     /** 
      * Define data.
      * @constant data
-     */ 
+    */ 
     const data = await db.query("SELECT * FROM users");
     res.send(data)
 })
@@ -49,23 +49,23 @@ app.get('/users', async (req, res) => {
  * @async
  * @param {*} req
  * @param {*} res
- */ 
+*/ 
 app.get('/users/:id', async (req, res) => {
     /**
      * Request user's data by id.
      * @callback req~requestCallback
-     */
+    */
 
     /**
      * Define the user's id
      * @constant id 
-     */
+    */
     const id = req.params.id
     
     /**
      * Define data.
      * @constant data
-     */
+    */
     const data = await db.query("SELECT * FROM users WHERE id = $1", [id])
     res.send(data);
 })
@@ -82,7 +82,7 @@ app.put('/users', async (req, res) => {
     /**
      * Request users's data. 
      * @callback req~requestCallback
-     */
+    */
     if(isValid(req)){
         await db.none("INSERT INTO users(first_name, last_name, address) VALUES ($(first_name),$(last_name),$(address))", req.body)
         res.statusCode = 201;
@@ -99,7 +99,7 @@ app.put('/users', async (req, res) => {
  * @param {*} req
  * @param {*} res
  * @requires isValid
- */ 
+*/ 
 app.patch('/users/:id', async (req, res) => {
     /**
      * Request user's data by id.
