@@ -3,10 +3,20 @@ const expect = chai.expect;
 import {isValid} from "../src/validator.js";
 
 /** 
-* Test validation
-* Check whether data is present, missing and empty
+ * Test validation - check if data is present, missing and empty
+ * @requires isValid
 */ 
 describe('validation', () => {
+  /**
+   * Request users's data.
+   * @callback req~requestCallback
+  */
+ 
+  /**
+   * Define req.
+   * @param {var} req
+  */
+
   var req = {body: undefined}
   it('body is undefined', (done) =>{
     expect (isValid(req)).is.false

@@ -8,44 +8,81 @@ const port = 3000;
 const pgp = pgpromise({});
 
 /** 
-* Define the Database Url as Enviroment Variable, which will be declared in the command prompt
-*/ 
+ * Define the Database Url as an Enviroment Variable, which will be declared in the command prompt.
+ * @constant db
+ */ 
 const db = pgp(process.env["DB_URL"]);
 
+/**
+ * Use Express.
+ * @constant app
+ * @requires module express 
+ */
 app.use(express.json());
 
 /** 
-* Use basic authentication
-*/ 
+ * Use basic authentication.
+ * @constant app
+ * @requires module auth
+ */ 
 app.use(auth);
 
 /** 
- * Get/Read data from Database
-*/
+ * Retrieve users's data from Database.
+ * @constant app
+ * @async
+ * @param {*} req
+ * @param {*} res
+ */
 app.get('/users', async (req, res) => {
     /** 
-     * Retrieve users's data from Database
-    */ 
+     * Define data.
+     * @constant data
+     */ 
     const data = await db.query("SELECT * FROM users");
     res.send(data)
 })
 
 /** 
-* Retrieve a single user's data from Database by id
-*/ 
+ * Retrieve the data of an individual user from the Database.
+ * @constant app
+ * @async
+ * @param {*} req
+ * @param {*} res
+ */ 
 app.get('/users/:id', async (req, res) => {
+    /**
+     * Request user's data by id.
+     * @callback req~requestCallback
+     */
+
+    /**
+     * Define the user's id
+     * @constant id 
+     */
     const id = req.params.id
+    
+    /**
+     * Define data.
+     * @constant data
+     */
     const data = await db.query("SELECT * FROM users WHERE id = $1", [id])
     res.send(data);
 })
 
 /** 
  * Enter data into the Database
+ * @constant app
+ * @async
+ * @param {*} req
+ * @param {*} res
+ * @requires isValid
 */
 app.put('/users', async (req, res) => {
     /**
-     * Call isValid function to check whether the data entered are correct, before being entered into the Database.
-    */
+     * Request users's data. 
+     * @callback req~requestCallback
+     */
     if(isValid(req)){
         await db.none("INSERT INTO users(first_name, last_name, address) VALUES ($(first_name),$(last_name),$(address))", req.body)
         res.statusCode = 201;
@@ -56,10 +93,25 @@ app.put('/users', async (req, res) => {
 })
 
 /** 
-* Patch the data of a single user in the Database by id
-*/ 
+ * Patch the data of a single user in the Database by id
+ * @constant app
+ * @async
+ * @param {*} req
+ * @param {*} res
+ * @requires isValid
+ */ 
 app.patch('/users/:id', async (req, res) => {
+    /**
+     * Request user's data by id.
+     * @callback req~requestCallback
+    */
+   
+    /**
+     * Define the user's id
+     * @constant id 
+    */
     const id = req.params.id
+
     if(isValid(req)){
         await db.none(`UPDATE users SET first_name=$(first_name), last_name=$(last_name), address=$(address) WHERE id=${id}`, req.body)
         res.send()
@@ -70,10 +122,27 @@ app.patch('/users/:id', async (req, res) => {
 })
 
 /** 
-* Delete the data of a single user in the Database by id
+ * Delete the data of a single user in the Database by id.
+ * @constant app
+ * @param {*} req
+ * @param {*} res
 */
 app.delete('/users/:id', async (req, res) => {
+    /**
+    * Request user's data by id.
+    * @callback req~requestCallback
+    */
+
+    /**
+     * Define user's id.
+     * @constant id 
+    */
     const id = req.params.id
+    
+    /**
+     * Define data.
+     * @constant data
+    */
     const data = await db.query("DELETE FROM users WHERE id=$1", [id])
     res.send(data);
 })
