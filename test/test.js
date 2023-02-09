@@ -1,14 +1,18 @@
 import chai from 'chai';
-const expect = chai.expect;
 import {isValid} from "../src/validator.js";
 
 /** 
- * Test validation - check if data is present, missing and empty
+ * Test validation: check if data is present, missing and empty.
+ * @requires module chai
+ * @constant expect
  * @requires isValid
 */ 
+
+const expect = chai.expect;
+
 describe('validation', () => {
   /**
-   * Request users's data.
+   * Request user's data.
    * @callback req~requestCallback
   */
  

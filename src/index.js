@@ -3,6 +3,14 @@ import express from 'express';
 import pgpromise from 'pg-promise';
 import auth from './middleware/basic-auth.js';
 import { isValid } from './validator.js';
+
+/**
+ * Define app(that imports express top-level function from express module), port, and pgpromise.
+ * @constant app
+ * @constant port
+ * @constant pgp
+ * @requires module express 
+*/
 const app = express();
 const port = 3000;
 const pgp = pgpromise({});
@@ -14,22 +22,20 @@ const pgp = pgpromise({});
 const db = pgp(process.env["DB_URL"]);
 
 /**
- * Use Express.
- * @constant app
+ * Use top-level express function imported from express module, returns middleware that only parses 
+ * json and only looks at requests where the Content-Type header matches the type option.
  * @requires module express 
 */
 app.use(express.json());
 
 /** 
  * Use basic authentication.
- * @constant app
  * @requires module auth
 */ 
 app.use(auth);
 
 /** 
- * Retrieve users's data from Database.
- * @constant app
+ * Get users's data from Database.
  * @async
  * @param {*} req
  * @param {*} res
@@ -44,8 +50,7 @@ app.get('/users', async (req, res) => {
 })
 
 /** 
- * Retrieve the data of an individual user from the Database.
- * @constant app
+ * Get the data of a single user from the Database by id.
  * @async
  * @param {*} req
  * @param {*} res
@@ -71,8 +76,7 @@ app.get('/users/:id', async (req, res) => {
 })
 
 /** 
- * Enter data into the Database
- * @constant app
+ * Enter data into the Database.
  * @async
  * @param {*} req
  * @param {*} res
@@ -93,8 +97,7 @@ app.put('/users', async (req, res) => {
 })
 
 /** 
- * Patch the data of a single user in the Database by id
- * @constant app
+ * Modify the data of a single user into the Database by id.
  * @async
  * @param {*} req
  * @param {*} res
@@ -123,7 +126,6 @@ app.patch('/users/:id', async (req, res) => {
 
 /** 
  * Delete the data of a single user in the Database by id.
- * @constant app
  * @param {*} req
  * @param {*} res
 */

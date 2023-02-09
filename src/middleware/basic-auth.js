@@ -25,7 +25,7 @@ function getUnauthorizedResponse(req) {
 }
 
 /**
- * A module for basic authentication.
+ * Export basicAuth from module auth for basic authentication.
  * @module auth
  * @default
 */
