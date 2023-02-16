@@ -20,9 +20,36 @@ jobs:
           root: .
           paths:
             - .
+  dockerPush: 
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
+      - run:
+          command: |
+            tag=`echo ${CIRCLE_TAG} | cut -b 2-999` 
+            docker build -t simo099/webapp:${tag} . 
+            docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}  
+            docker push simo099/webapp:${tag}
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build-workflow:
     jobs:
-      - test
+      - test:
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*$/
+      - dockerPush:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*$/
+    
