@@ -3,6 +3,7 @@ import express from 'express';
 import pgpromise from 'pg-promise';
 import auth from './middleware/basic-auth.js';
 import { isValid } from './validator.js';
+import createPatchQuery from './util.js';
 
 /**
  * Define app(that imports express top-level function from express module), port, and pgpromise.
@@ -115,13 +116,17 @@ app.patch('/users/:id', async (req, res) => {
     */
     const id = req.params.id
 
+    await db.query(createPatchQuery(req.body)+` WHERE id=${id}`, req.body)
+    res.send()
+    /*
     if(isValid(req)){
-        await db.none(`UPDATE users SET first_name=$(first_name), last_name=$(last_name), address=$(address) WHERE id=${id}`, req.body)
+        await db.query(`UPDATE users SET (first_name, last_name, address) VALUES ($(first_name),$(last_name),$(address)) WHERE id=${id}`, req.body)
         res.send()
     }
     else{
       res.status(400).json({status: 400, message: "Bad Request", validation: false});  
     }
+    */
 })
 
 /** 
