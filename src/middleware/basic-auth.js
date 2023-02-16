@@ -1,7 +1,20 @@
 import basicAuth from'express-basic-auth'
 
-const BasicAuth = basicAuth({
+/** 
+ * Define basic authentication.
+ * @constant auth
+ * @requires module basicAuth
+*/ 
+const auth = basicAuth({
+    /** 
+     * Set users {username: password}
+    */ 
     users: { 'foo': 'bar' },
+    /** 
+     * Get an unauthorized response when username and data aren't correct or missing.
+     * @function getUnauthorizedResponse
+     * @todo Returns an unauthorized response.
+    */ 
     unauthorizedResponse: getUnauthorizedResponse
 })
 
@@ -11,4 +24,9 @@ function getUnauthorizedResponse(req) {
         : 'No credentials provided'
 }
 
-export default BasicAuth
+/**
+ * Export basicAuth from module auth for basic authentication.
+ * @module auth
+ * @default
+*/
+export default auth
