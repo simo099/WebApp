@@ -1,9 +1,13 @@
 import chai from 'chai';
 import createPatchQuery from '../src/util.js';
 
-const expect = chai.expect;
+/** 
+ * Create patch query: update Database's table fields. 
+ * @requires module chai
+ * @constant expect
+*/ 
 
-//`UPDATE users SET (first_name, last_name, address) VALUES ($(first_name),$(last_name),$(address)) WHERE id=${id}`
+const expect = chai.expect;
 
 describe('util', () => {
     it('create patch query', (done) =>{

@@ -102,7 +102,7 @@ app.put('/users', async (req, res) => {
  * @async
  * @param {*} req
  * @param {*} res
- * @requires isValid
+ * @requires createPatchQuery
 */ 
 app.patch('/users/:id', async (req, res) => {
     /**
@@ -118,15 +118,6 @@ app.patch('/users/:id', async (req, res) => {
 
     await db.query(createPatchQuery(req.body)+` WHERE id=${id}`, req.body)
     res.send()
-    /*
-    if(isValid(req)){
-        await db.query(`UPDATE users SET (first_name, last_name, address) VALUES ($(first_name),$(last_name),$(address)) WHERE id=${id}`, req.body)
-        res.send()
-    }
-    else{
-      res.status(400).json({status: 400, message: "Bad Request", validation: false});  
-    }
-    */
 })
 
 /** 
