@@ -6,6 +6,7 @@ import createPatchQuery from '../src/util.js';
  * @requires module chai
  * @constant expect
 */ 
+
 const expect = chai.expect;
 
 describe('util', () => {
