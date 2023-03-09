@@ -4,6 +4,7 @@ import pgpromise from 'pg-promise';
 import auth from './middleware/basic-auth.js';
 import { isValid } from './validator.js';
 import createPatchQuery from './util.js';
+import createTable from './initializer.js';
 
 /**
  * Define app(that imports express top-level function from express module), port, and pgpromise.
@@ -21,6 +22,8 @@ const pgp = pgpromise({});
  * @constant db
 */ 
 const db = pgp(process.env["DB_URL"]);
+
+createTable(db)
 
 /**
  * Use top-level express function imported from express module, returns middleware that only parses 
