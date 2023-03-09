@@ -5,6 +5,7 @@ import createPatchQuery from '../src/util.js';
  * Create patch query: update Database's table fields. 
  * @requires module chai
  * @constant expect
+ * @requires createPatchQuery
 */ 
 
 const expect = chai.expect;
