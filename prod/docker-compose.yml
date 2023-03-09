@@ -12,7 +12,7 @@ services:
     volumes:
     - ./db:/var/lib/postgresql/data
  webapp:
-    image: simo099/webapp:1.0.0
+    image: simo099/webapp:1.0.1
     depends_on:
       - postgres
     environment:
